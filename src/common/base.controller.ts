@@ -9,7 +9,7 @@ export class BaseController {
 		this._router = Router();
 	}
 
-	get router() {
+	get router(): Router {
 		return this._router;
 	}
 
@@ -18,19 +18,18 @@ export class BaseController {
 		return res.status(code).json(message);
 	}
 
-	public ok<T>(res: Response, message: T) {
+	public ok<T>(res: Response, message: T): Response {
 		return this.send<T>(res, 200, message);
 	}
 
-	public created(res: Response) {
+	public created(res: Response): Response {
 		return res.sendStatus(201);
 	}
 
-	protected bindRoutes(routes: IControllerRoute[]): void {
+	protected routes = (routes: IControllerRoute[]): void => {
 		routes.forEach((route) => {
 			this.logger.log(`[${route.method}] - ${route.path}`);
-			const handler = route.func.bind(this);
-			this.router[route.method](route.path, handler);
+			this.router[route.method](route.path, route.func);
 		});
-	}
+	};
 }
