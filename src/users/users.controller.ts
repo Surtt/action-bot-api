@@ -5,6 +5,8 @@ import { HTTPError } from '../errors/http-error.class';
 import { inject, injectable } from 'inversify';
 import { Symbols } from '../symbols';
 import 'reflect-metadata';
+import { UserLoginDto } from './dto/user-login.dto';
+import { UserRegisterDto } from './dto/user-register.dto';
 
 @injectable()
 export class UsersController extends BaseController {
@@ -24,11 +26,13 @@ export class UsersController extends BaseController {
 		]);
 	}
 
-	login = (req: Request, res: Response, next: NextFunction): void => {
+	login = (req: Request<{}, {}, UserLoginDto>, res: Response, next: NextFunction): void => {
+		console.log(req.body);
 		next(new HTTPError(401, 'Authorization error'));
 	};
 
-	register = (req: Request, res: Response, next: NextFunction): void => {
+	register = (req: Request<{}, {}, UserRegisterDto>, res: Response, next: NextFunction): void => {
+		console.log(req.body);
 		this.ok(res, 'register');
 	};
 }
