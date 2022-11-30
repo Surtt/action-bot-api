@@ -10,10 +10,11 @@
     "dev:inspect": "nodemon -e ts,josn --exec node --inspect=localhost:9222 -r ts-node/register src/main.ts",
     "lint": "eslint ./src/**",
     "lint:fix": "eslint ./src/** --fix",
-    "generate": "prisma generate",
     "build": "tsc",
     "test": "jest",
-    "test:e2e": "jest --config jest.e2e.config.ts --coverage"
+    "test:e2e": "jest --config jest.e2e.config.ts --coverage",
+    "migrate": "prisma migrate dev",
+    "generate": "prisma generate"
   },
   "keywords": [
     "api",
@@ -26,7 +27,7 @@
   "author": "Alexander Sergeev",
   "license": "ISC",
   "dependencies": {
-    "@prisma/client": "^4.6.1",
+    "@prisma/client": "^4.7.0",
     "@types/express": "^4.17.14",
     "@types/node": "^18.11.7",
     "bcryptjs": "^2.4.3",
@@ -53,7 +54,8 @@
     "jest": "^29.3.1",
     "nodemon": "^2.0.20",
     "prettier": "^2.7.1",
-    "prisma": "^4.6.1",
+    "prettier-plugin-prisma": "^4.4.0",
+    "prisma": "^4.7.0",
     "supertest": "^6.3.1",
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
