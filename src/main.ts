@@ -8,11 +8,14 @@ import { Symbols } from './symbols';
 import { IExceptionFilter } from './errors/exception.filter.interface';
 import { IUserController } from './users/users.controller.interface';
 import Bind = interfaces.Bind;
+import { IUsersService } from './users/users.service.interface';
+import { UsersService } from './users/users.service';
 
 const appBindings = new ContainerModule((bind: Bind) => {
 	bind<ILogger>(Symbols.ILogger).to(LoggerService);
 	bind<IExceptionFilter>(Symbols.ExceptionFilter).to(ExceptionFilter);
 	bind<IUserController>(Symbols.UserController).to(UsersController);
+	bind<IUsersService>(Symbols.UserService).to(UsersService);
 	bind<App>(Symbols.Application).to(App);
 });
 

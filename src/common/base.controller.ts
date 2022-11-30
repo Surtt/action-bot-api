@@ -32,7 +32,9 @@ export class BaseController {
 	protected routes = (routes: IControllerRoute[]): void => {
 		routes.forEach((route) => {
 			this.logger.log(`[${route.method}] - ${route.path}`);
-			this.router[route.method](route.path, route.func);
+			const middleware = route.middlewares?.map((m) => m.execute);
+			const pipeline = middleware ? [...middleware, route.func] : route.func;
+			this.router[route.method](route.path, pipeline);
 		});
 	};
 }
