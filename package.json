@@ -14,7 +14,8 @@
     "test": "jest",
     "test:e2e": "jest --config jest.e2e.config.ts --coverage",
     "migrate": "prisma migrate dev",
-    "generate": "prisma generate"
+    "generate": "prisma generate",
+    "database": "prisma studio"
   },
   "keywords": [
     "api",
