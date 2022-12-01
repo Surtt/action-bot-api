@@ -7,7 +7,6 @@ import { Symbols } from '../symbols';
 import 'reflect-metadata';
 import { UserLoginDto } from './dto/user-login.dto';
 import { UserRegisterDto } from './dto/user-register.dto';
-import { User } from './user.entity';
 import { IUsersService } from './users.service.interface';
 import { IUserController } from './users.controller.interface';
 import { ValidateMiddleware } from '../common/validate.middleware';
@@ -24,6 +23,7 @@ export class UsersController extends BaseController implements IUserController {
 				path: '/login',
 				method: 'post',
 				func: this.login,
+				middlewares: [new ValidateMiddleware(UserLoginDto)],
 			},
 			{
 				path: '/register',
@@ -35,12 +35,15 @@ export class UsersController extends BaseController implements IUserController {
 	}
 
 	login = async (
-		req: Request<{}, {}, UserLoginDto>,
+		{ body }: Request<{}, {}, UserLoginDto>,
 		res: Response,
 		next: NextFunction,
 	): Promise<void> => {
-		console.log(req.body);
-		next(new HTTPError(401, 'Authorization error'));
+		const user = await this.usersService.validateUser(body);
+		if (!user) {
+			return next(new HTTPError(401, 'Authorization error'));
+		}
+		this.ok(res, {});
 	};
 
 	register = async (
