@@ -16,6 +16,11 @@ import { PrismaService } from './database/prisma.service';
 import { IUsersRepository } from './users/users.repository.interface';
 import { UsersRepository } from './users/users.repository';
 
+export interface IBootstrapReturn {
+	container: Container;
+	app: App;
+}
+
 const appBindings = new ContainerModule((bind: Bind) => {
 	bind<ILogger>(Symbols.ILogger).to(LoggerService).inSingletonScope();
 	bind<IExceptionFilter>(Symbols.ExceptionFilter).to(ExceptionFilter);
@@ -27,12 +32,12 @@ const appBindings = new ContainerModule((bind: Bind) => {
 	bind<App>(Symbols.Application).to(App);
 });
 
-const bootstrap = () => {
+const bootstrap = async (): Promise<IBootstrapReturn> => {
 	const container = new Container();
 	container.load(appBindings);
 	const app = container.get<App>(Symbols.Application);
-	app.init();
+	await app.init();
 	return { app, container };
 };
 
-export const { app, container } = bootstrap();
+export const boot = bootstrap();
