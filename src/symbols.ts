@@ -3,8 +3,10 @@ export const Symbols = {
 	ILogger: Symbol.for('ILogger'),
 	UserController: Symbol.for('UserController'),
 	UserService: Symbol.for('UserService'),
+	UsersRepository: Symbol.for('UsersRepository'),
+	ActionsController: Symbol.for('ActionsController'),
+	ActionsService: Symbol.for('ActionsService'),
 	ExceptionFilter: Symbol.for('ExceptionFilter'),
 	ConfigService: Symbol.for('ConfigService'),
 	PrismaService: Symbol.for('PrismaService'),
-	UsersRepository: Symbol.for('UsersRepository'),
 };

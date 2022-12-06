@@ -15,6 +15,10 @@ import { ConfigService } from './config/config.service';
 import { PrismaService } from './database/prisma.service';
 import { IUsersRepository } from './users/users.repository.interface';
 import { UsersRepository } from './users/users.repository';
+import { IActionsController } from './actions/actions.controller.interface';
+import { ActionsController } from './actions/actions.controller';
+import { IActionsService } from './actions/actions.service.interface';
+import { ActionsService } from './actions/actions.service';
 
 export interface IBootstrapReturn {
 	container: Container;
@@ -26,9 +30,11 @@ const appBindings = new ContainerModule((bind: Bind) => {
 	bind<IExceptionFilter>(Symbols.ExceptionFilter).to(ExceptionFilter);
 	bind<IUserController>(Symbols.UserController).to(UsersController);
 	bind<IUsersService>(Symbols.UserService).to(UsersService);
+	bind<IUsersRepository>(Symbols.UsersRepository).to(UsersRepository).inSingletonScope();
+	bind<IActionsController>(Symbols.ActionsController).to(ActionsController).inSingletonScope();
+	bind<IActionsService>(Symbols.ActionsService).to(ActionsService).inSingletonScope();
 	bind<PrismaService>(Symbols.PrismaService).to(PrismaService).inSingletonScope();
 	bind<IConfigService>(Symbols.ConfigService).to(ConfigService).inSingletonScope();
-	bind<IUsersRepository>(Symbols.UsersRepository).to(UsersRepository).inSingletonScope();
 	bind<App>(Symbols.Application).to(App);
 });
 
