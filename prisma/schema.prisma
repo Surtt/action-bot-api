@@ -16,3 +16,16 @@ model UserModel {
   email    String
   password String
 }
+
+model ActionModel {
+  id        Int      @id @default(autoincrement())
+  title     String
+  text      String
+  startDay  DateTime
+  endDay    DateTime
+  city      String
+  tags      String[]
+  category  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

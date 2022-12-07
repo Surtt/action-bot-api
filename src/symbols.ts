@@ -6,6 +6,7 @@ export const Symbols = {
 	UsersRepository: Symbol.for('UsersRepository'),
 	ActionsController: Symbol.for('ActionsController'),
 	ActionsService: Symbol.for('ActionsService'),
+	ActionsRepository: Symbol.for('ActionsRepository'),
 	ExceptionFilter: Symbol.for('ExceptionFilter'),
 	ConfigService: Symbol.for('ConfigService'),
 	PrismaService: Symbol.for('PrismaService'),

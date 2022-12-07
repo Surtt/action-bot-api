@@ -19,6 +19,8 @@ import { IActionsController } from './actions/actions.controller.interface';
 import { ActionsController } from './actions/actions.controller';
 import { IActionsService } from './actions/actions.service.interface';
 import { ActionsService } from './actions/actions.service';
+import { IActionsRepository } from './actions/actions.repository.interface';
+import { ActionsRepository } from './actions/actions.repository';
 
 export interface IBootstrapReturn {
 	container: Container;
@@ -33,6 +35,7 @@ const appBindings = new ContainerModule((bind: Bind) => {
 	bind<IUsersRepository>(Symbols.UsersRepository).to(UsersRepository).inSingletonScope();
 	bind<IActionsController>(Symbols.ActionsController).to(ActionsController).inSingletonScope();
 	bind<IActionsService>(Symbols.ActionsService).to(ActionsService).inSingletonScope();
+	bind<IActionsRepository>(Symbols.ActionsRepository).to(ActionsRepository).inSingletonScope();
 	bind<PrismaService>(Symbols.PrismaService).to(PrismaService).inSingletonScope();
 	bind<IConfigService>(Symbols.ConfigService).to(ConfigService).inSingletonScope();
 	bind<App>(Symbols.Application).to(App);
