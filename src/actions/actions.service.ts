@@ -6,6 +6,7 @@ import { Symbols } from '../symbols';
 import { IActionsRepository } from './actions.repository.interface';
 import { ActionModel } from '@prisma/client';
 import { DeleteActionDto } from './dto/delete-action.dto';
+import { UpdateActionDto } from './dto/update-action.dto';
 
 @injectable()
 export class ActionsService implements IActionsService {
@@ -29,5 +30,19 @@ export class ActionsService implements IActionsService {
 
 	deleteAction = async ({ id }: DeleteActionDto): Promise<ActionModel | null> => {
 		return this.actionsRepository.delete(id);
+	};
+
+	updateAction = async ({
+		id,
+		title,
+		text,
+		startDay,
+		endDay,
+		city,
+		tags,
+		category,
+	}: UpdateActionDto): Promise<ActionModel> => {
+		const updatedAction = new Action(title, text, startDay, endDay, city, tags, category);
+		return this.actionsRepository.update(id, updatedAction);
 	};
 }

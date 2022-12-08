@@ -66,7 +66,8 @@ export class ActionsController extends BaseController implements IActionsControl
 		this.ok(res, body.id);
 	};
 
-	updateAction(req: Request, res: Response, next: NextFunction): void {
-		this.ok(res, 'update action');
-	}
+	updateAction = async ({ body }: Request, res: Response, next: NextFunction): Promise<void> => {
+		await this.actionsService.updateAction(body);
+		this.ok(res, body);
+	};
 }

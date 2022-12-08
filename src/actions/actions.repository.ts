@@ -30,15 +30,35 @@ export class ActionsRepository implements IActionsRepository {
 		});
 	};
 
-	async find(title: string): Promise<ActionModel | null> {
+	find = async (title: string): Promise<ActionModel | null> => {
 		return this.prismaService.client.actionModel.findFirst({
 			where: {
 				title,
 			},
 		});
-	}
+	};
 
-	async delete(id: number): Promise<ActionModel> {
+	delete = (id: number): Promise<ActionModel> => {
 		return this.prismaService.client.actionModel.delete({ where: { id } });
-	}
+	};
+
+	update = async (
+		id: number,
+		{ title, text, startDay, endDay, city, tags, category }: Action,
+	): Promise<ActionModel> => {
+		return this.prismaService.client.actionModel.update({
+			where: {
+				id,
+			},
+			data: {
+				title,
+				text,
+				startDay,
+				endDay,
+				city,
+				tags,
+				category,
+			},
+		});
+	};
 }
