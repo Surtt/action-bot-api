@@ -8,6 +8,7 @@ import { ValidateMiddleware } from '../common/validate.middleware';
 import { AddActionDto } from './dto/add-action.dto';
 import { IActionsService } from './actions.service.interface';
 import { HTTPError } from '../errors/http-error.class';
+import { DeleteActionDto } from './dto/delete-action.dto';
 
 @injectable()
 export class ActionsController extends BaseController implements IActionsController {
@@ -56,9 +57,14 @@ export class ActionsController extends BaseController implements IActionsControl
 		this.ok(res, body);
 	};
 
-	deleteAction(req: Request, res: Response, next: NextFunction): void {
-		this.ok(res, 'delete action');
-	}
+	deleteAction = async (
+		{ body }: Request<{}, {}, DeleteActionDto>,
+		res: Response,
+		next: NextFunction,
+	): Promise<void> => {
+		await this.actionsService.deleteAction(body);
+		this.ok(res, body.id);
+	};
 
 	updateAction(req: Request, res: Response, next: NextFunction): void {
 		this.ok(res, 'update action');

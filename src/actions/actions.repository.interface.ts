@@ -3,5 +3,6 @@ import { Action } from './action.entity';
 
 export interface IActionsRepository {
 	create: (action: Action) => Promise<ActionModel>;
-	find: (email: string) => Promise<ActionModel | null>;
+	delete: (id: number) => Promise<ActionModel>;
+	find: (title: string) => Promise<ActionModel | null>;
 }

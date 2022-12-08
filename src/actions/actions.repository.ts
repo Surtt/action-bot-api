@@ -37,4 +37,8 @@ export class ActionsRepository implements IActionsRepository {
 			},
 		});
 	}
+
+	async delete(id: number): Promise<ActionModel> {
+		return this.prismaService.client.actionModel.delete({ where: { id } });
+	}
 }

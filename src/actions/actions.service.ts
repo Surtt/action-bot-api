@@ -5,6 +5,7 @@ import { inject, injectable } from 'inversify';
 import { Symbols } from '../symbols';
 import { IActionsRepository } from './actions.repository.interface';
 import { ActionModel } from '@prisma/client';
+import { DeleteActionDto } from './dto/delete-action.dto';
 
 @injectable()
 export class ActionsService implements IActionsService {
@@ -24,5 +25,9 @@ export class ActionsService implements IActionsService {
 			return null;
 		}
 		return this.actionsRepository.create(newAction);
+	};
+
+	deleteAction = async ({ id }: DeleteActionDto): Promise<ActionModel | null> => {
+		return this.actionsRepository.delete(id);
 	};
 }
