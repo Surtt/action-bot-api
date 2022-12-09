@@ -45,4 +45,8 @@ export class ActionsService implements IActionsService {
 		const updatedAction = new Action(title, text, startDay, endDay, city, tags, category);
 		return this.actionsRepository.update(id, updatedAction);
 	};
+
+	getActions = async (): Promise<ActionModel[]> => {
+		return this.actionsRepository.getActions();
+	};
 }

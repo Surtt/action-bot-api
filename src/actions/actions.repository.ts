@@ -61,4 +61,8 @@ export class ActionsRepository implements IActionsRepository {
 			},
 		});
 	};
+
+	getActions = async (): Promise<ActionModel[]> => {
+		return this.prismaService.client.actionModel.findMany();
+	};
 }

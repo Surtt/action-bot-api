@@ -9,6 +9,7 @@ import { AddActionDto } from './dto/add-action.dto';
 import { IActionsService } from './actions.service.interface';
 import { HTTPError } from '../errors/http-error.class';
 import { DeleteActionDto } from './dto/delete-action.dto';
+import { UpdateActionDto } from './dto/update-action.dto';
 
 @injectable()
 export class ActionsController extends BaseController implements IActionsController {
@@ -41,8 +42,9 @@ export class ActionsController extends BaseController implements IActionsControl
 			},
 		]);
 	}
-	getActions = (req: Request, res: Response, next: NextFunction): void => {
-		this.ok(res, 'all actions');
+	getActions = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+		const result = await this.actionsService.getActions();
+		this.ok(res, result);
 	};
 
 	addAction = async (
