@@ -24,7 +24,7 @@ export class App {
 		@inject(Symbols.PrismaService) private prismaService: PrismaService,
 	) {
 		this.app = express();
-		this.port = 8000;
+		this.port = Number(this.configService.get('PORT'));
 	}
 
 	useMiddleware(): void {
@@ -37,7 +37,7 @@ export class App {
 		this.app.use('/users/', this.userController.router);
 	}
 
-	useExceptionFilter() {
+	useExceptionFilter(): void {
 		this.app.use(this.exceptionFilter.catch);
 	}
 
