@@ -39,7 +39,7 @@ export class UsersController extends BaseController implements IUserController {
 				path: '/info',
 				method: 'get',
 				func: this.info,
-				middlewares: [new AuthGuard()],
+				middlewares: [new AuthGuard('admin')],
 			},
 		]);
 	}
@@ -74,13 +74,12 @@ export class UsersController extends BaseController implements IUserController {
 		this.ok(res, { name: user.name, email: user.email, role: user.role });
 	};
 
-	info = async ({ user }: Request, res: Response, next: NextFunction) => {
-		const userInfo = await this.usersService.getUserInfo(user);
-		// console.log(userInfo);
-		this.ok(res, { email: userInfo?.email, id: userInfo?.id });
+	info = async ({ user }: Request, res: Response, next: NextFunction): Promise<void> => {
+		const userInfo = await this.usersService.getUserInfo(user.email);
+		this.ok(res, { id: userInfo?.id, email: userInfo?.email, role: userInfo?.role });
 	};
 
-	private signJWT = (email: string, role: string, secret: string): Promise<string> => {
+	private signJWT = async (email: string, role: string, secret: string): Promise<string> => {
 		return new Promise<string>((resolve, reject) => {
 			sign(
 				{
