@@ -9,6 +9,7 @@ import { IConfigService } from './config/config.service.interface';
 import { IExceptionFilter } from './errors/exception.filter.interface';
 import { PrismaService } from './database/prisma.service';
 import { AuthMiddleware } from './common/auth.middleware';
+import { ActionsController } from './actions/actions.controller';
 
 @injectable()
 export class App {
@@ -19,6 +20,7 @@ export class App {
 	constructor(
 		@inject(Symbols.ILogger) private logger: ILogger,
 		@inject(Symbols.UserController) private userController: UsersController,
+		@inject(Symbols.ActionsController) private actionsController: ActionsController,
 		@inject(Symbols.ExceptionFilter) private exceptionFilter: IExceptionFilter,
 		@inject(Symbols.ConfigService) private configService: IConfigService,
 		@inject(Symbols.PrismaService) private prismaService: PrismaService,
@@ -35,6 +37,7 @@ export class App {
 
 	useRoutes(): void {
 		this.app.use('/users/', this.userController.router);
+		this.app.use('/actions', this.actionsController.router);
 	}
 
 	useExceptionFilter(): void {
@@ -46,7 +49,9 @@ export class App {
 		this.useRoutes();
 		this.useExceptionFilter();
 		await this.prismaService.connect();
-		this.server = this.app.listen(this.port);
+		if (process.env.NODE_ENV !== 'test') {
+			this.server = this.app.listen(this.port);
+		}
 		this.logger.log(`Server: http://localhost:${this.port}`);
 	}
 

@@ -15,4 +15,18 @@ model UserModel {
   name     String
   email    String
   password String
+  role     String
+}
+
+model ActionModel {
+  id        Int      @id @default(autoincrement())
+  title     String
+  text      String
+  startDay  DateTime
+  endDay    DateTime
+  city      String
+  tags      String[]
+  category  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
