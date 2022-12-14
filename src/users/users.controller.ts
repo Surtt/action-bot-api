@@ -13,6 +13,9 @@ import { ValidateMiddleware } from '../common/validate.middleware';
 import { sign } from 'jsonwebtoken';
 import { IConfigService } from '../config/config.service.interface';
 import { AuthGuard } from '../common/auth.guard';
+import { DeleteActionDto } from '../actions/dto/delete-action.dto';
+import { DeleteUserDto } from './dto/delete-user.dto';
+import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 
 @injectable()
 export class UsersController extends BaseController implements IUserController {
@@ -40,6 +43,18 @@ export class UsersController extends BaseController implements IUserController {
 				method: 'post',
 				func: this.registerProvider,
 				middlewares: [new ValidateMiddleware(UserRegisterDto), new AuthGuard('admin')],
+			},
+			{
+				path: '/provider',
+				method: 'delete',
+				func: this.deleteUser,
+				middlewares: [new ValidateMiddleware(DeleteUserDto), new AuthGuard('admin')],
+			},
+			{
+				path: '/provider',
+				method: 'patch',
+				func: this.updateUser,
+				middlewares: [new ValidateMiddleware(UpdateUserPasswordDto), new AuthGuard('admin')],
 			},
 			{
 				path: '/info',
@@ -90,6 +105,23 @@ export class UsersController extends BaseController implements IUserController {
 			return next(new HTTPError(422, 'This provider already exists'));
 		}
 		this.ok(res, { name: user.name, email: user.email, role: user.role });
+	};
+
+	deleteUser = async (
+		{ body }: Request<{}, {}, DeleteUserDto>,
+		res: Response,
+		next: NextFunction,
+	): Promise<void> => {
+		await this.usersService.deleteUser(body);
+		this.ok(res, body.id);
+	};
+
+	updateUser = async ({ body }: Request, res: Response, next: NextFunction): Promise<void> => {
+		console.log(body);
+		const user = await this.usersService.updateUserPassword(body);
+		if (user) {
+			this.ok(res, { name: user.name, email: user.email, role: user.role });
+		}
 	};
 
 	info = async ({ user }: Request, res: Response, next: NextFunction): Promise<void> => {

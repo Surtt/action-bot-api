@@ -3,5 +3,8 @@ import { User } from './user.entity';
 
 export interface IUsersRepository {
 	create: (user: User) => Promise<UserModel>;
+	delete: (id: number) => Promise<UserModel>;
+	update: (id: number, user: User) => Promise<UserModel>;
 	find: (email: string) => Promise<UserModel | null>;
+	findById: (id: number) => Promise<UserModel | null>;
 }
