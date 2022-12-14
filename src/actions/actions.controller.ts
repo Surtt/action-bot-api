@@ -30,7 +30,7 @@ export class ActionsController extends BaseController implements IActionsControl
 				path: '/action',
 				method: 'post',
 				func: this.addAction,
-				middlewares: [new ValidateMiddleware(AddActionDto), new AuthGuard('admin')],
+				middlewares: [new ValidateMiddleware(AddActionDto)],
 			},
 			{
 				path: '/action',
@@ -52,15 +52,20 @@ export class ActionsController extends BaseController implements IActionsControl
 	};
 
 	addAction = async (
-		{ body }: Request<{}, {}, AddActionDto>,
+		{ body, user }: Request<{}, {}, AddActionDto>,
 		res: Response,
 		next: NextFunction,
 	): Promise<void> => {
-		const action = await this.actionsService.createAction(body);
+		const status = user.role === 'admin' ? 'approved' : 'moderated';
+		const action = await this.actionsService.createAction({
+			...body,
+			status,
+		});
 		if (!action?.title) {
 			return next(new HTTPError(422, 'This action already exists'));
 		}
-		this.ok(res, body);
+
+		this.ok(res, { ...body, status });
 	};
 
 	deleteAction = async (

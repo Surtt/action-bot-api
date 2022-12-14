@@ -8,4 +8,5 @@ export interface IActionsService {
 	createAction: (dto: AddActionDto) => Promise<ActionModel | null>;
 	deleteAction: (dto: DeleteActionDto) => Promise<ActionModel | null>;
 	updateAction: (dto: UpdateActionDto) => Promise<ActionModel>;
+	getActionInfo: (id: number) => Promise<ActionModel | null>;
 }

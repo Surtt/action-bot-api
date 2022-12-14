@@ -7,4 +7,5 @@ export interface IActionsRepository {
 	delete: (id: number) => Promise<ActionModel>;
 	update: (id: number, action: Action) => Promise<ActionModel>;
 	find: (title: string) => Promise<ActionModel | null>;
+	findById: (id: number) => Promise<ActionModel | null>;
 }

@@ -51,4 +51,8 @@ export class ActionsService implements IActionsService {
 	getActions = async (): Promise<ActionModel[]> => {
 		return this.actionsRepository.getActions();
 	};
+
+	getActionInfo = async (id: number): Promise<ActionModel | null> => {
+		return this.actionsRepository.findById(id);
+	};
 }

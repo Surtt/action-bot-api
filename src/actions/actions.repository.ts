@@ -1,6 +1,6 @@
 import { IActionsRepository } from './actions.repository.interface';
 import { Action } from './action.entity';
-import { ActionModel, UserModel } from '@prisma/client';
+import { ActionModel } from '@prisma/client';
 import { inject, injectable } from 'inversify';
 import { Symbols } from '../symbols';
 import { PrismaService } from '../database/prisma.service';
@@ -36,6 +36,14 @@ export class ActionsRepository implements IActionsRepository {
 		return this.prismaService.client.actionModel.findFirst({
 			where: {
 				title,
+			},
+		});
+	};
+
+	findById = async (id: number): Promise<ActionModel | null> => {
+		return this.prismaService.client.actionModel.findUnique({
+			where: {
+				id,
 			},
 		});
 	};
