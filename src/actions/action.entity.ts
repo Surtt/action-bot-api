@@ -7,6 +7,7 @@ export class Action {
 		private readonly _city: string,
 		private readonly _tags: string[],
 		private readonly _category: string,
+		private readonly _status: string,
 	) {}
 
 	get title() {
@@ -35,5 +36,9 @@ export class Action {
 
 	get category() {
 		return this._category;
+	}
+
+	get status() {
+		return this._status;
 	}
 }

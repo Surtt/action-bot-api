@@ -10,6 +10,7 @@ import { IActionsService } from './actions.service.interface';
 import { HTTPError } from '../errors/http-error.class';
 import { DeleteActionDto } from './dto/delete-action.dto';
 import { UpdateActionDto } from './dto/update-action.dto';
+import { AuthGuard } from '../common/auth.guard';
 
 @injectable()
 export class ActionsController extends BaseController implements IActionsController {
@@ -23,22 +24,25 @@ export class ActionsController extends BaseController implements IActionsControl
 				path: '/all-actions',
 				method: 'get',
 				func: this.getActions,
+				middlewares: [new AuthGuard('admin')],
 			},
 			{
 				path: '/action',
 				method: 'post',
 				func: this.addAction,
-				middlewares: [new ValidateMiddleware(AddActionDto)],
+				middlewares: [new ValidateMiddleware(AddActionDto), new AuthGuard('admin')],
 			},
 			{
 				path: '/action',
 				method: 'delete',
 				func: this.deleteAction,
+				middlewares: [new ValidateMiddleware(DeleteActionDto), new AuthGuard('admin')],
 			},
 			{
 				path: '/action',
 				method: 'put',
 				func: this.updateAction,
+				middlewares: [new ValidateMiddleware(UpdateActionDto), new AuthGuard('admin')],
 			},
 		]);
 	}

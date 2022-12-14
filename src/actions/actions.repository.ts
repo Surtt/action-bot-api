@@ -16,6 +16,7 @@ export class ActionsRepository implements IActionsRepository {
 		city,
 		tags,
 		category,
+		status,
 	}: Action): Promise<ActionModel> => {
 		return this.prismaService.client.actionModel.create({
 			data: {
@@ -26,6 +27,7 @@ export class ActionsRepository implements IActionsRepository {
 				city,
 				tags,
 				category,
+				status,
 			},
 		});
 	};

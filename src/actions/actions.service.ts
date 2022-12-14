@@ -19,8 +19,9 @@ export class ActionsService implements IActionsService {
 		city,
 		tags,
 		category,
+		status,
 	}: AddActionDto): Promise<ActionModel | null> => {
-		const newAction = new Action(title, text, startDay, endDay, city, tags, category);
+		const newAction = new Action(title, text, startDay, endDay, city, tags, category, status);
 		const existedAction = await this.actionsRepository.find(title);
 		if (existedAction) {
 			return null;
@@ -41,8 +42,9 @@ export class ActionsService implements IActionsService {
 		city,
 		tags,
 		category,
+		status,
 	}: UpdateActionDto): Promise<ActionModel> => {
-		const updatedAction = new Action(title, text, startDay, endDay, city, tags, category);
+		const updatedAction = new Action(title, text, startDay, endDay, city, tags, category, status);
 		return this.actionsRepository.update(id, updatedAction);
 	};
 

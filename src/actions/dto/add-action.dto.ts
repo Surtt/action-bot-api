@@ -23,4 +23,7 @@ export class AddActionDto {
 
 	@IsString({ message: 'Category is not specified' })
 	category: string;
+
+	@IsString({ message: 'Status is not specified' })
+	status: string;
 }
