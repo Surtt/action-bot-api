@@ -14,8 +14,13 @@ export class UsersService implements IUsersService {
 		@inject(Symbols.ConfigService) private configService: IConfigService,
 		@inject(Symbols.UsersRepository) private usersRepository: IUsersRepository,
 	) {}
-	createUser = async ({ name, email, password }: UserRegisterDto): Promise<UserModel | null> => {
-		const newUser = new User(name, email);
+	createUser = async ({
+		name,
+		email,
+		role,
+		password,
+	}: UserRegisterDto): Promise<UserModel | null> => {
+		const newUser = new User(name, email, role);
 		const salt = this.configService.get('SALT');
 		await newUser.setPassword(password, Number(salt));
 		const existedUser = await this.usersRepository.find(email);
@@ -30,7 +35,12 @@ export class UsersService implements IUsersService {
 		if (!existedUser) {
 			return false;
 		}
-		const newUser = new User(existedUser.name, existedUser.email, existedUser.password);
+		const newUser = new User(
+			existedUser.name,
+			existedUser.email,
+			existedUser.role,
+			existedUser.password,
+		);
 		return newUser.comparePassword(password);
 	};
 

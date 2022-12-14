@@ -36,6 +36,12 @@ export class UsersController extends BaseController implements IUserController {
 				middlewares: [new ValidateMiddleware(UserRegisterDto)],
 			},
 			{
+				path: '/provider',
+				method: 'post',
+				func: this.registerProvider,
+				middlewares: [new ValidateMiddleware(UserRegisterDto), new AuthGuard('admin')],
+			},
+			{
 				path: '/info',
 				method: 'get',
 				func: this.info,
@@ -70,6 +76,18 @@ export class UsersController extends BaseController implements IUserController {
 		const user = await this.usersService.createUser(body);
 		if (!user) {
 			return next(new HTTPError(422, 'This user already exists'));
+		}
+		this.ok(res, { name: user.name, email: user.email, role: user.role });
+	};
+
+	registerProvider = async (
+		{ body }: Request<{}, {}, UserRegisterDto>,
+		res: Response,
+		next: NextFunction,
+	): Promise<void> => {
+		const user = await this.usersService.createUser(body);
+		if (!user) {
+			return next(new HTTPError(422, 'This provider already exists'));
 		}
 		this.ok(res, { name: user.name, email: user.email, role: user.role });
 	};

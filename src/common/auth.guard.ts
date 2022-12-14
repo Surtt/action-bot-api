@@ -8,7 +8,7 @@ export class AuthGuard implements IMiddleware {
 			if (req.user.role === this.role) {
 				return next();
 			} else {
-				res.status(403).send({ error: 'Access denied ' });
+				res.status(403).send({ error: 'Access denied' });
 			}
 		} else {
 			res.status(401).send({ error: 'Not authorized' });
