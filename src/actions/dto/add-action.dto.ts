@@ -6,6 +6,7 @@ import {
 	IsOptional,
 	IsString,
 } from 'class-validator';
+import { TStatus } from '../../../types';
 
 export class AddActionDto {
 	@IsString({ message: 'Title is not specified' })
@@ -15,10 +16,10 @@ export class AddActionDto {
 	text: string;
 
 	@IsString({ message: 'Start Day is not specified' })
-	startDay: string;
+	startDay: Date;
 
 	@IsString({ message: 'End Day is not specified' })
-	endDay: string;
+	endDay: Date;
 
 	@IsString({ message: 'City is not specified' })
 	city: string;
@@ -34,7 +35,7 @@ export class AddActionDto {
 	@IsOptional()
 	@IsNotEmpty()
 	@IsString({ message: 'Status is not specified' })
-	status: string;
+	status: TStatus;
 
 	@IsOptional()
 	@IsNotEmpty()

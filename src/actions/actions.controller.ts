@@ -13,6 +13,7 @@ import { UpdateActionDto } from './dto/update-action.dto';
 import { AuthGuard } from '../common/auth.guard';
 import { IUsersService } from '../users/users.service.interface';
 import { ActionModel, UserModel } from '@prisma/client';
+import { ReviewActionDto } from './dto/review-action.dto';
 
 @injectable()
 export class ActionsController extends BaseController implements IActionsController {
@@ -46,6 +47,12 @@ export class ActionsController extends BaseController implements IActionsControl
 				method: 'put',
 				func: this.updateAction,
 				middlewares: [new ValidateMiddleware(UpdateActionDto), new AuthGuard('admin')],
+			},
+			{
+				path: '/action',
+				method: 'patch',
+				func: this.reviewAction,
+				middlewares: [new ValidateMiddleware(ReviewActionDto), new AuthGuard('admin')],
 			},
 		]);
 	}
@@ -99,8 +106,21 @@ export class ActionsController extends BaseController implements IActionsControl
 		this.ok(res, body.id);
 	};
 
-	updateAction = async ({ body }: Request, res: Response, next: NextFunction): Promise<void> => {
+	updateAction = async (
+		{ body }: Request<{}, {}, UpdateActionDto>,
+		res: Response,
+		next: NextFunction,
+	): Promise<void> => {
 		await this.actionsService.updateAction(body);
+		this.ok(res, body);
+	};
+
+	reviewAction = async (
+		{ body }: Request<{}, {}, ReviewActionDto>,
+		res: Response,
+		next: NextFunction,
+	): Promise<void> => {
+		await this.actionsService.reviewAction(body);
 		this.ok(res, body);
 	};
 }

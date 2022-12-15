@@ -1,13 +1,15 @@
+import { TStatus } from '../../types';
+
 export class Action {
 	constructor(
 		private readonly _title: string,
 		private readonly _text: string,
-		private readonly _startDay: string,
-		private readonly _endDay: string,
+		private readonly _startDay: Date,
+		private readonly _endDay: Date,
 		private readonly _city: string,
 		private readonly _tags: string[],
 		private readonly _category: string,
-		private readonly _status: string,
+		private readonly _status: TStatus,
 		private readonly _authorId: number,
 	) {}
 

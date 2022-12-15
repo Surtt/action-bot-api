@@ -7,6 +7,7 @@ import { IActionsRepository } from './actions.repository.interface';
 import { ActionModel, UserModel } from '@prisma/client';
 import { DeleteActionDto } from './dto/delete-action.dto';
 import { UpdateActionDto } from './dto/update-action.dto';
+import { ReviewActionDto } from './dto/review-action.dto';
 
 @injectable()
 export class ActionsService implements IActionsService {
@@ -68,6 +69,10 @@ export class ActionsService implements IActionsService {
 			authorId,
 		);
 		return this.actionsRepository.update(id, updatedAction);
+	};
+
+	reviewAction = async ({ id, status }: ReviewActionDto): Promise<ActionModel | null> => {
+		return this.actionsRepository.review(id, status);
 	};
 
 	getActions = async (

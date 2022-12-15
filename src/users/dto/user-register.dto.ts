@@ -1,4 +1,5 @@
 import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { TRole } from '../../../types';
 
 export class UserRegisterDto {
 	@IsString({ message: 'Name is not specified' })
@@ -10,7 +11,7 @@ export class UserRegisterDto {
 	@IsOptional()
 	@IsNotEmpty()
 	@IsString({ message: 'Role is not specified' })
-	role?: string;
+	role?: TRole;
 
 	@IsString({ message: 'Password is not specified' })
 	password: string;

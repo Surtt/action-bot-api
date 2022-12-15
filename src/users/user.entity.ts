@@ -1,12 +1,13 @@
 import { compare, hash } from 'bcryptjs';
+import { TRole } from '../../types';
 
 export class User {
 	private _password: string;
-	private readonly _role: string = 'admin';
+	private readonly _role: TRole = 'admin';
 	constructor(
 		private readonly _name: string,
 		private readonly _email: string,
-		userRole?: string,
+		userRole?: TRole,
 		passwordHash?: string,
 	) {
 		if (userRole) {
@@ -26,7 +27,7 @@ export class User {
 		return this._name;
 	}
 
-	get role(): string {
+	get role(): TRole {
 		return this._role;
 	}
 

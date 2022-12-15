@@ -4,6 +4,7 @@ import { ActionModel, UserModel } from '@prisma/client';
 import { inject, injectable } from 'inversify';
 import { Symbols } from '../symbols';
 import { PrismaService } from '../database/prisma.service';
+import { TStatus } from '../../types';
 
 @injectable()
 export class ActionsRepository implements IActionsRepository {
@@ -70,6 +71,17 @@ export class ActionsRepository implements IActionsRepository {
 				city,
 				tags,
 				category,
+			},
+		});
+	};
+
+	review = async (id: number, status: TStatus): Promise<ActionModel> => {
+		return this.prismaService.client.actionModel.update({
+			where: {
+				id,
+			},
+			data: {
+				status,
 			},
 		});
 	};

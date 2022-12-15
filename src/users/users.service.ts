@@ -9,6 +9,7 @@ import { IUsersRepository } from './users.repository.interface';
 import { UserModel } from '@prisma/client';
 import { DeleteUserDto } from './dto/delete-user.dto';
 import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
+import { TRole } from '../../types';
 
 @injectable()
 export class UsersService implements IUsersService {
@@ -40,7 +41,7 @@ export class UsersService implements IUsersService {
 		const newUser = new User(
 			existedUser.name,
 			existedUser.email,
-			existedUser.role,
+			existedUser.role as TRole,
 			existedUser.password,
 		);
 		return newUser.comparePassword(password);
@@ -62,7 +63,7 @@ export class UsersService implements IUsersService {
 		if (!findUser) {
 			return null;
 		}
-		const updatedUser = new User(findUser.name, findUser.email, findUser.role);
+		const updatedUser = new User(findUser.name, findUser.email, findUser.role as TRole);
 		const salt = this.configService.get('SALT');
 		await updatedUser.setPassword(password, Number(salt));
 		return this.usersRepository.update(id, updatedUser);
