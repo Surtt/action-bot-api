@@ -11,12 +11,14 @@ import { HTTPError } from '../errors/http-error.class';
 import { DeleteActionDto } from './dto/delete-action.dto';
 import { UpdateActionDto } from './dto/update-action.dto';
 import { AuthGuard } from '../common/auth.guard';
+import { IUsersService } from '../users/users.service.interface';
 
 @injectable()
 export class ActionsController extends BaseController implements IActionsController {
 	constructor(
 		@inject(Symbols.ILogger) private loggerService: ILogger,
 		@inject(Symbols.ActionsService) private actionsService: IActionsService,
+		@inject(Symbols.UserService) private userService: IUsersService,
 	) {
 		super(loggerService);
 		this.routes([
@@ -55,17 +57,23 @@ export class ActionsController extends BaseController implements IActionsControl
 		{ body, user }: Request<{}, {}, AddActionDto>,
 		res: Response,
 		next: NextFunction,
-	): Promise<void> => {
+	): Promise<void | null> => {
+		const userInfo = await this.userService.getUserInfo(user.email);
+
+		if (!userInfo) {
+			return null;
+		}
 		const status = user.role === 'admin' ? 'approved' : 'moderated';
 		const action = await this.actionsService.createAction({
 			...body,
 			status,
+			authorId: userInfo?.id,
 		});
 		if (!action?.title) {
 			return next(new HTTPError(422, 'This action already exists'));
 		}
 
-		this.ok(res, { ...body, status });
+		this.ok(res, { ...body, status, authorId: userInfo.id });
 	};
 
 	deleteAction = async (

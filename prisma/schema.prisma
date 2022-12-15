@@ -16,6 +16,7 @@ model UserModel {
   email    String
   password String
   role     String
+  actions  ActionModel[]
 }
 
 model ActionModel {
@@ -30,4 +31,6 @@ model ActionModel {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   status    String
+  author    UserModel @relation(fields: [authorId], references: [id])
+  authorId  Int
 }

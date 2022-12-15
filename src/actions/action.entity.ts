@@ -8,6 +8,7 @@ export class Action {
 		private readonly _tags: string[],
 		private readonly _category: string,
 		private readonly _status: string,
+		private readonly _authorId: number,
 	) {}
 
 	get title() {
@@ -40,5 +41,9 @@ export class Action {
 
 	get status() {
 		return this._status;
+	}
+
+	get authorId() {
+		return this._authorId;
 	}
 }

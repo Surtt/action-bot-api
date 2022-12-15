@@ -20,8 +20,19 @@ export class ActionsService implements IActionsService {
 		tags,
 		category,
 		status,
+		authorId,
 	}: AddActionDto): Promise<ActionModel | null> => {
-		const newAction = new Action(title, text, startDay, endDay, city, tags, category, status);
+		const newAction = new Action(
+			title,
+			text,
+			startDay,
+			endDay,
+			city,
+			tags,
+			category,
+			status,
+			authorId,
+		);
 		const existedAction = await this.actionsRepository.find(title);
 		if (existedAction) {
 			return null;
@@ -43,8 +54,19 @@ export class ActionsService implements IActionsService {
 		tags,
 		category,
 		status,
+		authorId,
 	}: UpdateActionDto): Promise<ActionModel> => {
-		const updatedAction = new Action(title, text, startDay, endDay, city, tags, category, status);
+		const updatedAction = new Action(
+			title,
+			text,
+			startDay,
+			endDay,
+			city,
+			tags,
+			category,
+			status,
+			authorId,
+		);
 		return this.actionsRepository.update(id, updatedAction);
 	};
 

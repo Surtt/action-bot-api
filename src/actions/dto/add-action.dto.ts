@@ -1,4 +1,11 @@
-import { ArrayNotEmpty, IsArray, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import {
+	ArrayNotEmpty,
+	IsArray,
+	IsNotEmpty,
+	IsNumber,
+	IsOptional,
+	IsString,
+} from 'class-validator';
 
 export class AddActionDto {
 	@IsString({ message: 'Title is not specified' })
@@ -28,4 +35,9 @@ export class AddActionDto {
 	@IsNotEmpty()
 	@IsString({ message: 'Status is not specified' })
 	status: string;
+
+	@IsOptional()
+	@IsNotEmpty()
+	@IsNumber()
+	authorId: number;
 }

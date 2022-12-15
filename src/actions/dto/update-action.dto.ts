@@ -1,4 +1,11 @@
-import { ArrayNotEmpty, IsArray, IsNumber, IsString } from 'class-validator';
+import {
+	ArrayNotEmpty,
+	IsArray,
+	IsNotEmpty,
+	IsNumber,
+	IsOptional,
+	IsString,
+} from 'class-validator';
 
 export class UpdateActionDto {
 	@IsNumber()
@@ -29,4 +36,9 @@ export class UpdateActionDto {
 
 	@IsString({ message: 'Status is not specified' })
 	status: string;
+
+	@IsOptional()
+	@IsNotEmpty()
+	@IsNumber()
+	authorId: number;
 }
