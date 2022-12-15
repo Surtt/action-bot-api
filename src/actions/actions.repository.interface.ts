@@ -1,8 +1,11 @@
-import { ActionModel } from '@prisma/client';
+import { ActionModel, UserModel } from '@prisma/client';
 import { Action } from './action.entity';
 
 export interface IActionsRepository {
-	getActions: () => Promise<ActionModel[]>;
+	getActions: (
+		userId: number,
+		userRole: string,
+	) => Promise<(UserModel & { actions: ActionModel[] }) | null | ActionModel[]>;
 	create: (action: Action) => Promise<ActionModel>;
 	delete: (id: number) => Promise<ActionModel>;
 	update: (id: number, action: Action) => Promise<ActionModel>;

@@ -4,7 +4,7 @@ import { Action } from './action.entity';
 import { inject, injectable } from 'inversify';
 import { Symbols } from '../symbols';
 import { IActionsRepository } from './actions.repository.interface';
-import { ActionModel } from '@prisma/client';
+import { ActionModel, UserModel } from '@prisma/client';
 import { DeleteActionDto } from './dto/delete-action.dto';
 import { UpdateActionDto } from './dto/update-action.dto';
 
@@ -70,8 +70,11 @@ export class ActionsService implements IActionsService {
 		return this.actionsRepository.update(id, updatedAction);
 	};
 
-	getActions = async (): Promise<ActionModel[]> => {
-		return this.actionsRepository.getActions();
+	getActions = async (
+		userId: number,
+		userRole: string,
+	): Promise<(UserModel & { actions: ActionModel[] }) | null | ActionModel[]> => {
+		return this.actionsRepository.getActions(userId, userRole);
 	};
 
 	getActionInfo = async (id: number): Promise<ActionModel | null> => {

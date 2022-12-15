@@ -12,6 +12,7 @@ import { DeleteActionDto } from './dto/delete-action.dto';
 import { UpdateActionDto } from './dto/update-action.dto';
 import { AuthGuard } from '../common/auth.guard';
 import { IUsersService } from '../users/users.service.interface';
+import { ActionModel, UserModel } from '@prisma/client';
 
 @injectable()
 export class ActionsController extends BaseController implements IActionsController {
@@ -26,7 +27,7 @@ export class ActionsController extends BaseController implements IActionsControl
 				path: '/all-actions',
 				method: 'get',
 				func: this.getActions,
-				middlewares: [new AuthGuard('admin')],
+				middlewares: [],
 			},
 			{
 				path: '/action',
@@ -48,9 +49,23 @@ export class ActionsController extends BaseController implements IActionsControl
 			},
 		]);
 	}
-	getActions = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-		const result = await this.actionsService.getActions();
-		this.ok(res, result);
+	getActions = async (
+		{ user }: Request,
+		res: Response,
+		next: NextFunction,
+	): Promise<void | null> => {
+		const userInfo = await this.userService.getUserInfo(user.email);
+
+		if (!userInfo) {
+			return null;
+		}
+
+		const userRole = user.role;
+		const userId = userInfo.id;
+		const result = await this.actionsService.getActions(userId, userRole);
+		const { actions }: any = result;
+		const actionsData = userRole === 'admin' ? result : actions;
+		this.ok(res, actionsData);
 	};
 
 	addAction = async (
@@ -59,7 +74,6 @@ export class ActionsController extends BaseController implements IActionsControl
 		next: NextFunction,
 	): Promise<void | null> => {
 		const userInfo = await this.userService.getUserInfo(user.email);
-
 		if (!userInfo) {
 			return null;
 		}
