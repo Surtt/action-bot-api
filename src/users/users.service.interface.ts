@@ -5,6 +5,7 @@ import { DeleteUserDto } from './dto/delete-user.dto';
 import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 
 export interface IUsersService {
+	getUsers: () => Promise<UserModel[]>;
 	createUser: (dto: UserRegisterDto) => Promise<UserModel | null>;
 	validateUser: (dto: UserLoginDto) => Promise<boolean>;
 	getUserInfo: (email: string) => Promise<UserModel | null>;

@@ -27,6 +27,12 @@ export class UsersController extends BaseController implements IUserController {
 		super(loggerService);
 		this.routes([
 			{
+				path: '/all-users',
+				method: 'get',
+				func: this.getUsers,
+				middlewares: [new AuthGuard('admin')],
+			},
+			{
 				path: '/login',
 				method: 'post',
 				func: this.login,
@@ -64,6 +70,11 @@ export class UsersController extends BaseController implements IUserController {
 			},
 		]);
 	}
+
+	getUsers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
+		const result = await this.usersService.getUsers();
+		this.ok(res, result);
+	};
 
 	login = async (
 		{ body }: Request<{}, {}, UserLoginDto>,

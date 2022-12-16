@@ -35,6 +35,8 @@ export class UpdateActionDto {
 	@IsString({ message: 'Category is not specified' })
 	category: string;
 
+	@IsOptional()
+	@IsNotEmpty()
 	@IsString({ message: 'Status is not specified' })
 	status: TStatus;
 

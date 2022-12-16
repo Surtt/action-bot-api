@@ -49,4 +49,8 @@ export class UsersRepository implements IUsersRepository {
 			},
 		});
 	};
+
+	getUsers = async (): Promise<UserModel[]> => {
+		return this.prismaService.client.userModel.findMany();
+	};
 }

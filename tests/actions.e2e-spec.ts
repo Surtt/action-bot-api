@@ -20,6 +20,7 @@ beforeAll(async () => {
 			city: 'Moscow',
 			tags: ['React', 'JavaScript'],
 			category: 'Courses',
+			status: 'moderated',
 		});
 	const actions = await request(application.app).get('/actions/all-actions');
 	actionId = actions.body.find((a: ActionModel) => a.title === createdAction.body.title)?.id;
@@ -33,13 +34,21 @@ describe('Actions e2e', () => {
 				id: actionId,
 				title: 'Tanstack Query',
 				text: 'React Query Course',
-				startDay: '2022-12-12T14:21:00+02:00',
-				endDay: '2023-01-01T14:21:00+02:00',
-				city: 'Moscow',
-				tags: ['React', 'JavaScript'],
+				startDay: '2023-12-12T14:21:00+02:00',
+				endDay: '2024-01-01T14:21:00+02:00',
+				city: 'Espoo',
+				tags: ['React', 'JavaScript', 'React Query'],
 				category: 'Courses',
+				status: 'moderated',
 			});
 		expect(result.body.title).toBe('Tanstack Query');
+	});
+
+	it('Should change status', async () => {
+		const result = await request(application.app)
+			.patch('/actions/action')
+			.send({ id: actionId, status: 'approved' });
+		expect(result.body.status).toBe('approved');
 	});
 });
 
@@ -55,5 +64,6 @@ afterAll(async () => {
 			city: 'Moscow',
 			tags: ['React', 'JavaScript'],
 			category: 'Courses',
+			status: 'approved',
 		});
 });

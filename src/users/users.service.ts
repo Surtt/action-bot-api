@@ -68,4 +68,8 @@ export class UsersService implements IUsersService {
 		await updatedUser.setPassword(password, Number(salt));
 		return this.usersRepository.update(id, updatedUser);
 	};
+
+	getUsers = async (): Promise<UserModel[]> => {
+		return this.usersRepository.getUsers();
+	};
 }
