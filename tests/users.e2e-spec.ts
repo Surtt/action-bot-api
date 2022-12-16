@@ -76,8 +76,6 @@ describe('Users e2e', () => {
 	});
 
 	it('should delete provider', async () => {
-		const provider = { id: providerId, name: 'Dan', email: 'dan@mail.com', role: 'provider' };
-
 		const result = await request(application.app)
 			.delete('/users/provider')
 			.set('Authorization', `Bearer ${jwt}`)
