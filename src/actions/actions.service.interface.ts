@@ -10,8 +10,8 @@ export interface IActionsService {
 		userRole: string,
 	) => Promise<(UserModel & { actions: ActionModel[] }) | null | ActionModel[]>;
 	createAction: (dto: AddActionDto) => Promise<ActionModel | null>;
-	deleteAction: (dto: DeleteActionDto) => Promise<ActionModel | null>;
+	deleteAction: (dto: DeleteActionDto) => Promise<ActionModel>;
 	updateAction: (dto: UpdateActionDto) => Promise<ActionModel>;
-	reviewAction: (dto: ReviewActionDto) => Promise<ActionModel | null>;
+	reviewAction: (dto: ReviewActionDto) => Promise<ActionModel>;
 	getActionInfo: (id: number) => Promise<ActionModel | null>;
 }

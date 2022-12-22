@@ -9,13 +9,14 @@ import { IUsersRepository } from './users.repository.interface';
 import { UserModel } from '@prisma/client';
 import { DeleteUserDto } from './dto/delete-user.dto';
 import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
-import { TRole } from '../../types';
+import { TRole } from '../types';
 
 @injectable()
 export class UsersService implements IUsersService {
 	constructor(
 		@inject(Symbols.ConfigService) private configService: IConfigService,
 		@inject(Symbols.UsersRepository) private usersRepository: IUsersRepository,
+		private readonly salt = configService.get('SALT'),
 	) {}
 	createUser = async ({
 		name,
@@ -23,13 +24,12 @@ export class UsersService implements IUsersService {
 		role,
 		password,
 	}: UserRegisterDto): Promise<UserModel | null> => {
-		const newUser = new User(name, email, role);
-		const salt = this.configService.get('SALT');
-		await newUser.setPassword(password, Number(salt));
 		const existedUser = await this.usersRepository.find(email);
 		if (existedUser) {
 			return null;
 		}
+		const newUser = new User(name, email, role);
+		await newUser.setPassword(password, Number(this.salt));
 		return this.usersRepository.create(newUser);
 	};
 
@@ -51,21 +51,17 @@ export class UsersService implements IUsersService {
 		return this.usersRepository.find(email);
 	};
 
-	deleteUser = async ({ id }: DeleteUserDto): Promise<UserModel | null> => {
+	deleteUser = async ({ id }: DeleteUserDto): Promise<UserModel> => {
 		return this.usersRepository.delete(id);
 	};
 
-	updateUserPassword = async ({
-		id,
-		password,
-	}: UpdateUserPasswordDto): Promise<UserModel | null> => {
+	updateUserPassword = async ({ id, password }: UpdateUserPasswordDto): Promise<UserModel> => {
 		const findUser = await this.usersRepository.findById(id);
 		if (!findUser) {
-			return null;
+			throw new Error('Unable to update password. User not found');
 		}
 		const updatedUser = new User(findUser.name, findUser.email, findUser.role as TRole);
-		const salt = this.configService.get('SALT');
-		await updatedUser.setPassword(password, Number(salt));
+		await updatedUser.setPassword(password, Number(this.salt));
 		return this.usersRepository.update(id, updatedUser);
 	};
 

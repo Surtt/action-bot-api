@@ -1,4 +1,4 @@
-import { TStatus } from '../../types';
+import { TStatus } from '../types';
 
 export class Action {
 	constructor(

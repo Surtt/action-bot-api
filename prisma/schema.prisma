@@ -11,12 +11,13 @@ datasource db {
 }
 
 model UserModel {
-  id       Int    @id @default(autoincrement())
-  name     String
-  email    String
-  password String
-  role     String
-  actions  ActionModel[]
+  id        Int    @id @default(autoincrement())
+  name      String
+  email     String
+  password  String
+  role      String
+  actions   ActionModel[]
+  isDeleted Boolean
 }
 
 model ActionModel {

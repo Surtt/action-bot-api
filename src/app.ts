@@ -10,6 +10,7 @@ import { IExceptionFilter } from './errors/exception.filter.interface';
 import { PrismaService } from './database/prisma.service';
 import { AuthMiddleware } from './common/auth.middleware';
 import { ActionsController } from './actions/actions.controller';
+import cors from 'cors';
 
 @injectable()
 export class App {
@@ -31,6 +32,7 @@ export class App {
 
 	useMiddleware(): void {
 		this.app.use(express.json());
+		this.app.use(cors());
 		const authMiddleware = new AuthMiddleware(this.configService.get('SECRET'));
 		this.app.use(authMiddleware.execute);
 	}

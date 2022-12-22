@@ -12,8 +12,8 @@ import { DeleteActionDto } from './dto/delete-action.dto';
 import { UpdateActionDto } from './dto/update-action.dto';
 import { AuthGuard } from '../common/auth.guard';
 import { IUsersService } from '../users/users.service.interface';
-import { ActionModel, UserModel } from '@prisma/client';
 import { ReviewActionDto } from './dto/review-action.dto';
+import { getStatus } from '../utils/getStatus';
 
 @injectable()
 export class ActionsController extends BaseController implements IActionsController {
@@ -84,17 +84,16 @@ export class ActionsController extends BaseController implements IActionsControl
 		if (!userInfo) {
 			return null;
 		}
-		const status = user.role === 'admin' ? 'approved' : 'moderated';
+
+		const status = getStatus(user.role);
+
 		const action = await this.actionsService.createAction({
 			...body,
 			status,
 			authorId: userInfo?.id,
 		});
-		if (!action?.title) {
-			return next(new HTTPError(422, 'This action already exists'));
-		}
 
-		this.ok(res, { ...body, status, authorId: userInfo.id });
+		this.ok(res, action);
 	};
 
 	deleteAction = async (

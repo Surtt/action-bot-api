@@ -1,9 +1,10 @@
 import { compare, hash } from 'bcryptjs';
-import { TRole } from '../../types';
+import { TRole } from '../types';
 
 export class User {
 	private _password: string;
 	private readonly _role: TRole = 'admin';
+	private readonly _isDeleted: boolean = false;
 	constructor(
 		private readonly _name: string,
 		private readonly _email: string,
@@ -33,6 +34,10 @@ export class User {
 
 	get password(): string {
 		return this._password;
+	}
+
+	get isDeleted(): boolean {
+		return this._isDeleted;
 	}
 
 	public setPassword = async (pass: string, salt: number): Promise<void> => {

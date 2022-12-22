@@ -1,5 +1,5 @@
-import { IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
-import { TRole } from '../../../types';
+import { IsBoolean, IsEmail, IsNotEmpty, IsOptional, IsString } from 'class-validator';
+import { TRole } from '../../types';
 
 export class UserRegisterDto {
 	@IsString({ message: 'Name is not specified' })

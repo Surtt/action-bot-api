@@ -41,7 +41,7 @@ export class ActionsService implements IActionsService {
 		return this.actionsRepository.create(newAction);
 	};
 
-	deleteAction = async ({ id }: DeleteActionDto): Promise<ActionModel | null> => {
+	deleteAction = async ({ id }: DeleteActionDto): Promise<ActionModel> => {
 		return this.actionsRepository.delete(id);
 	};
 
@@ -71,7 +71,7 @@ export class ActionsService implements IActionsService {
 		return this.actionsRepository.update(id, updatedAction);
 	};
 
-	reviewAction = async ({ id, status }: ReviewActionDto): Promise<ActionModel | null> => {
+	reviewAction = async ({ id, status }: ReviewActionDto): Promise<ActionModel> => {
 		return this.actionsRepository.review(id, status);
 	};
 

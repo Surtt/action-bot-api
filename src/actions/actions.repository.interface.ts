@@ -1,6 +1,6 @@
 import { ActionModel, UserModel } from '@prisma/client';
 import { Action } from './action.entity';
-import { TStatus } from '../../types';
+import { TStatus } from '../types';
 
 export interface IActionsRepository {
 	getActions: (

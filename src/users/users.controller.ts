@@ -13,7 +13,6 @@ import { ValidateMiddleware } from '../common/validate.middleware';
 import { sign } from 'jsonwebtoken';
 import { IConfigService } from '../config/config.service.interface';
 import { AuthGuard } from '../common/auth.guard';
-import { DeleteActionDto } from '../actions/dto/delete-action.dto';
 import { DeleteUserDto } from './dto/delete-user.dto';
 import { UpdateUserPasswordDto } from './dto/update-user-password.dto';
 
@@ -72,7 +71,10 @@ export class UsersController extends BaseController implements IUserController {
 	}
 
 	getUsers = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-		const result = await this.usersService.getUsers();
+		const users = await this.usersService.getUsers();
+		const result = users
+			.filter(({ isDeleted }) => !isDeleted)
+			.map(({ id, name, email, role }) => ({ id, name, email, role }));
 		this.ok(res, result);
 	};
 
@@ -103,7 +105,11 @@ export class UsersController extends BaseController implements IUserController {
 		if (!user) {
 			return next(new HTTPError(422, 'This user already exists'));
 		}
-		this.ok(res, { name: user.name, email: user.email, role: user.role });
+		this.ok(res, {
+			name: user.name,
+			email: user.email,
+			role: user.role,
+		});
 	};
 
 	registerProvider = async (
@@ -128,7 +134,6 @@ export class UsersController extends BaseController implements IUserController {
 	};
 
 	updateUser = async ({ body }: Request, res: Response, next: NextFunction): Promise<void> => {
-		console.log(body);
 		const user = await this.usersService.updateUserPassword(body);
 		if (user) {
 			this.ok(res, { name: user.name, email: user.email, role: user.role });

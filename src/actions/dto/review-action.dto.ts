@@ -1,4 +1,4 @@
-import { TStatus } from '../../../types';
+import { TStatus } from '../../types';
 import { IsNumber, IsString } from 'class-validator';
 
 export class ReviewActionDto {

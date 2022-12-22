@@ -4,7 +4,7 @@ import { ActionModel, UserModel } from '@prisma/client';
 import { inject, injectable } from 'inversify';
 import { Symbols } from '../symbols';
 import { PrismaService } from '../database/prisma.service';
-import { TStatus } from '../../types';
+import { TStatus } from '../types';
 
 @injectable()
 export class ActionsRepository implements IActionsRepository {

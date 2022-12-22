@@ -9,6 +9,6 @@ export interface IUsersService {
 	createUser: (dto: UserRegisterDto) => Promise<UserModel | null>;
 	validateUser: (dto: UserLoginDto) => Promise<boolean>;
 	getUserInfo: (email: string) => Promise<UserModel | null>;
-	deleteUser: (dto: DeleteUserDto) => Promise<UserModel | null>;
-	updateUserPassword: (dto: UpdateUserPasswordDto) => Promise<UserModel | null>;
+	deleteUser: (dto: DeleteUserDto) => Promise<UserModel>;
+	updateUserPassword: (dto: UpdateUserPasswordDto) => Promise<UserModel>;
 }

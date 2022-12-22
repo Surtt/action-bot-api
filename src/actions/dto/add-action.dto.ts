@@ -6,7 +6,7 @@ import {
 	IsOptional,
 	IsString,
 } from 'class-validator';
-import { TStatus } from '../../../types';
+import { TStatus } from '../../types';
 
 export class AddActionDto {
 	@IsString({ message: 'Title is not specified' })
