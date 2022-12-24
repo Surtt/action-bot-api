@@ -8,6 +8,7 @@ import { ActionModel, UserModel } from '@prisma/client';
 import { DeleteActionDto } from './dto/delete-action.dto';
 import { UpdateActionDto } from './dto/update-action.dto';
 import { ReviewActionDto } from './dto/review-action.dto';
+import { TUsersActions } from '../types';
 
 @injectable()
 export class ActionsService implements IActionsService {
@@ -22,7 +23,7 @@ export class ActionsService implements IActionsService {
 		category,
 		status,
 		authorId,
-	}: AddActionDto): Promise<ActionModel | null> => {
+	}: AddActionDto): Promise<ActionModel> => {
 		const newAction = new Action(
 			title,
 			text,
@@ -34,10 +35,7 @@ export class ActionsService implements IActionsService {
 			status,
 			authorId,
 		);
-		const existedAction = await this.actionsRepository.find(title);
-		if (existedAction) {
-			return null;
-		}
+
 		return this.actionsRepository.create(newAction);
 	};
 
@@ -75,11 +73,12 @@ export class ActionsService implements IActionsService {
 		return this.actionsRepository.review(id, status);
 	};
 
-	getActions = async (
-		userId: number,
-		userRole: string,
-	): Promise<(UserModel & { actions: ActionModel[] }) | null | ActionModel[]> => {
-		return this.actionsRepository.getActions(userId, userRole);
+	getActions = async (userId: number, userRole: string): Promise<TUsersActions> => {
+		if (userRole === 'admin') {
+			return this.actionsRepository.getActions();
+		} else {
+			return this.actionsRepository.getProvidersActions(userId);
+		}
 	};
 
 	getActionInfo = async (id: number): Promise<ActionModel | null> => {

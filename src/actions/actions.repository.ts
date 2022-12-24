@@ -1,10 +1,10 @@
 import { IActionsRepository } from './actions.repository.interface';
 import { Action } from './action.entity';
-import { ActionModel, UserModel } from '@prisma/client';
+import { ActionModel } from '@prisma/client';
 import { inject, injectable } from 'inversify';
 import { Symbols } from '../symbols';
 import { PrismaService } from '../database/prisma.service';
-import { TStatus } from '../types';
+import { TStatus, TUsersActions } from '../types';
 
 @injectable()
 export class ActionsRepository implements IActionsRepository {
@@ -86,21 +86,18 @@ export class ActionsRepository implements IActionsRepository {
 		});
 	};
 
-	getActions = async (
-		userId: number,
-		userRole: string,
-	): Promise<(UserModel & { actions: ActionModel[] }) | null | ActionModel[]> => {
-		if (userRole === 'admin') {
-			return this.prismaService.client.actionModel.findMany();
-		} else {
-			return this.prismaService.client.userModel.findUnique({
-				where: {
-					id: userId,
-				},
-				include: {
-					actions: true,
-				},
-			});
-		}
+	getActions = async (): Promise<TUsersActions> => {
+		return this.prismaService.client.actionModel.findMany();
+	};
+
+	getProvidersActions = async (userId: number) => {
+		return this.prismaService.client.userModel.findUnique({
+			where: {
+				id: userId,
+			},
+			include: {
+				actions: true,
+			},
+		});
 	};
 }

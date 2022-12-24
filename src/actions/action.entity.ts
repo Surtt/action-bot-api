@@ -13,39 +13,39 @@ export class Action {
 		private readonly _authorId: number,
 	) {}
 
-	get title() {
+	get title(): string {
 		return this._title;
 	}
 
-	get text() {
+	get text(): string {
 		return this._text;
 	}
 
-	get startDay() {
+	get startDay(): Date {
 		return this._startDay;
 	}
 
-	get endDay() {
+	get endDay(): Date {
 		return this._endDay;
 	}
 
-	get city() {
+	get city(): string {
 		return this._city;
 	}
 
-	get tags() {
+	get tags(): string[] {
 		return this._tags;
 	}
 
-	get category() {
+	get category(): string {
 		return this._category;
 	}
 
-	get status() {
+	get status(): string {
 		return this._status;
 	}
 
-	get authorId() {
+	get authorId(): number {
 		return this._authorId;
 	}
 }

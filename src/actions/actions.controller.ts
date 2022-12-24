@@ -14,6 +14,7 @@ import { AuthGuard } from '../common/auth.guard';
 import { IUsersService } from '../users/users.service.interface';
 import { ReviewActionDto } from './dto/review-action.dto';
 import { getStatus } from '../utils/getStatus';
+import { TRole } from '../types';
 
 @injectable()
 export class ActionsController extends BaseController implements IActionsController {
@@ -79,13 +80,13 @@ export class ActionsController extends BaseController implements IActionsControl
 		{ body, user }: Request<{}, {}, AddActionDto>,
 		res: Response,
 		next: NextFunction,
-	): Promise<void | null> => {
+	): Promise<void> => {
 		const userInfo = await this.userService.getUserInfo(user.email);
 		if (!userInfo) {
-			return null;
+			return next(new HTTPError(422, 'This user not found'));
 		}
 
-		const status = getStatus(user.role);
+		const status = getStatus(user.role as TRole);
 
 		const action = await this.actionsService.createAction({
 			...body,
