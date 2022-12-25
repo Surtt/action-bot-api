@@ -13,28 +13,8 @@ import { TUsersActions } from '../types';
 @injectable()
 export class ActionsService implements IActionsService {
 	constructor(@inject(Symbols.ActionsRepository) private actionsRepository: IActionsRepository) {}
-	createAction = async ({
-		title,
-		text,
-		startDay,
-		endDay,
-		city,
-		tags,
-		category,
-		status,
-		authorId,
-	}: AddActionDto): Promise<ActionModel> => {
-		const newAction = new Action(
-			title,
-			text,
-			startDay,
-			endDay,
-			city,
-			tags,
-			category,
-			status,
-			authorId,
-		);
+	createAction = async (dto: AddActionDto): Promise<ActionModel> => {
+		const newAction = new Action(dto);
 
 		return this.actionsRepository.create(newAction);
 	};
@@ -43,30 +23,9 @@ export class ActionsService implements IActionsService {
 		return this.actionsRepository.delete(id);
 	};
 
-	updateAction = async ({
-		id,
-		title,
-		text,
-		startDay,
-		endDay,
-		city,
-		tags,
-		category,
-		status,
-		authorId,
-	}: UpdateActionDto): Promise<ActionModel> => {
-		const updatedAction = new Action(
-			title,
-			text,
-			startDay,
-			endDay,
-			city,
-			tags,
-			category,
-			status,
-			authorId,
-		);
-		return this.actionsRepository.update(id, updatedAction);
+	updateAction = async (dto: UpdateActionDto): Promise<ActionModel> => {
+		const updatedAction = new Action(dto);
+		return this.actionsRepository.update(dto.id, updatedAction);
 	};
 
 	reviewAction = async ({ id, status }: ReviewActionDto): Promise<ActionModel> => {
