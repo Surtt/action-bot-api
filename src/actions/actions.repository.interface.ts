@@ -1,10 +1,10 @@
 import { ActionModel } from '@prisma/client';
 import { Action } from './action.entity';
-import { TStatus, TUsersActions } from '../types';
+import { TStatus } from '../types';
 
 export interface IActionsRepository {
-	getActions: () => Promise<TUsersActions>;
-	getProvidersActions: (userId: number) => Promise<TUsersActions>;
+	getActions: () => Promise<ActionModel[]>;
+	getProvidersActions: (userId: number) => Promise<ActionModel[]>;
 	create: (action: Action) => Promise<ActionModel>;
 	delete: (id: number) => Promise<ActionModel>;
 	update: (id: number, action: Action) => Promise<ActionModel>;

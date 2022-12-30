@@ -70,10 +70,8 @@ export class ActionsController extends BaseController implements IActionsControl
 
 		const userRole = user.role;
 		const userId = userInfo.id;
-		const result = await this.actionsService.getActions(userId, userRole);
-		const { actions }: any = result;
-		const actionsData = userRole === 'admin' ? result : actions;
-		this.ok(res, actionsData);
+		const actions = await this.actionsService.getActions(userId, userRole);
+		this.ok(res, actions);
 	};
 
 	addAction = async (
