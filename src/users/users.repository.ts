@@ -8,12 +8,14 @@ import { PrismaService } from '../database/prisma.service';
 @injectable()
 export class UsersRepository implements IUsersRepository {
 	constructor(@inject(Symbols.PrismaService) private prismaService: PrismaService) {}
-	async create({ name, email, password }: User): Promise<UserModel> {
+	async create({ name, email, role, password, isDeleted }: User): Promise<UserModel> {
 		return this.prismaService.client.userModel.create({
 			data: {
 				name,
 				email,
+				role,
 				password,
+				isDeleted,
 			},
 		});
 	}
@@ -25,4 +27,31 @@ export class UsersRepository implements IUsersRepository {
 			},
 		});
 	}
+
+	findById = async (id: number): Promise<UserModel | null> => {
+		return this.prismaService.client.userModel.findUnique({
+			where: {
+				id,
+			},
+		});
+	};
+
+	delete = async (id: number): Promise<UserModel> => {
+		return this.prismaService.client.userModel.update({ where: { id }, data: { isDeleted: true } });
+	};
+
+	update = async (id: number, { password }: User): Promise<UserModel> => {
+		return this.prismaService.client.userModel.update({
+			where: {
+				id,
+			},
+			data: {
+				password,
+			},
+		});
+	};
+
+	getUsers = async (): Promise<UserModel[]> => {
+		return this.prismaService.client.userModel.findMany();
+	};
 }

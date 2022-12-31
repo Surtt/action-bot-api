@@ -11,8 +11,27 @@ datasource db {
 }
 
 model UserModel {
-  id       Int    @id @default(autoincrement())
-  name     String
-  email    String
-  password String
+  id        Int    @id @default(autoincrement())
+  name      String
+  email     String
+  password  String
+  role      String
+  actions   ActionModel[]
+  isDeleted Boolean
+}
+
+model ActionModel {
+  id        Int      @id @default(autoincrement())
+  title     String
+  text      String
+  startDay  DateTime
+  endDay    DateTime
+  city      String
+  tags      String[]
+  category  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  status    String
+  author    UserModel @relation(fields: [authorId], references: [id])
+  authorId  Int
 }

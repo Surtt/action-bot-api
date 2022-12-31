@@ -11,7 +11,10 @@ export class AuthMiddleware implements IMiddleware {
 				if (err) {
 					return next();
 				} else if (typeof payload !== 'string' && payload !== undefined) {
-					req.user = payload.email;
+					req.user = {
+						email: payload.email,
+						role: payload.role,
+					};
 					return next();
 				}
 			});
