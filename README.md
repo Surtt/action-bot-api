@@ -1,5 +1,7 @@
 # Action Bot API
 
+[Action bot for Telegram](https://github.com/Surtt/action-telegram-bot/tree/main/action-bot)
+
 ### Stack:
 - TypeScript
 - Node.js
